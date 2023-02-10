@@ -32,7 +32,7 @@ SECRET_KEY = "django-insecure-3#o^oeh(6evx(!l$wcxlla%xvtgeubwudzk(d$s&kw5kld^b&x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "192.168.183.173", "10.64.177.180"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "192.168.183.173", "10.64.177.180", "10.12.0.226"]
 
 
 # Application definition
@@ -52,6 +52,7 @@ INSTALLED_APPS = [
 
     "codesharing",
     'users',
+    'project',
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'

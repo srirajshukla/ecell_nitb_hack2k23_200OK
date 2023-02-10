@@ -38,6 +38,7 @@ ALLOWED_HOSTS = ["127.0.0.1", "localhost", "192.168.183.173", "10.64.177.180", "
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -89,7 +90,12 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "codesharing.wsgi.application"
-
+ASGI_APPLICATION = "codesharing.asgi.application"
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': "channels.layers.InMemoryChannelLayer"
+        }
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

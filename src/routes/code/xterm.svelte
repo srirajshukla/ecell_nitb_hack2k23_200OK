@@ -1,31 +1,29 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	let terminal;
+	let tDiv;
 	let pyodide: any;
 	let pyodide_loaded: boolean = false;
 
-	// onMount(async () => {
-	// 	terminal = new (await import('xterm')).Terminal();
-	// 	terminal.open(document.getElementById('terminal'));
-	// 	terminal.write('This is the terminal');
-	// });
 	onMount(async () => {
+		terminal = new (await import('xterm')).Terminal();
+		terminal.open(tDiv);
 		//@ts-ignore
 		pyodide = await loadPyodide();
+		pyodide.globals.set('print', (s) => terminal.write(s));
 		pyodide_loaded = true;
 	});
 
 	export async function runCode(code) {
 		if (pyodide_loaded) {
-			const output = await pyodide.runPythonAsync(code);
-			console.log(output)
-			// showOutput(output);
+			const output = pyodide.runPython(code);
+			alert(output);
 		} else {
 			alert('Pyodide is loading');
 		}
 	}
 	export function showOutput(output) {
-		terminal.write(output);
+		if (output) terminal.write(output);
 	}
 </script>
 
@@ -34,9 +32,8 @@
 </svelte:head>
 
 {#if pyodide_loaded}
-	<span> Pydodide loaded successfully! </span>
+	<p>Pydodide loaded successfully!</p>
 {:else}
-	<span> Loading pyodide </span>
+	<p>Loading pyodide</p>
 {/if}
-
-<div id="terminal" />
+<div bind:this={tDiv} class="bg-black text-white p-4 font-mono" />

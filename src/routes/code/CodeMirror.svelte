@@ -44,7 +44,7 @@
 		});
 
 		const state = EditorState.create({
-			doc: 'import this',
+			doc: 'print("Hello, world")',
 			extensions: [
 				keymap.of([...yUndoManagerKeymap]),
 				basicSetup,

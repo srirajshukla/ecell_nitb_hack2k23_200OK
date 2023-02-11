@@ -35,5 +35,8 @@
 		"y-websocket": "^1.4.5",
 		"yjs": "^13.5.45"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"xterm-addon-fit": "^0.7.0"
+	}
 }

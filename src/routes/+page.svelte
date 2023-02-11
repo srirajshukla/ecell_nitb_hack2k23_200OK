@@ -1,42 +1,90 @@
 <script>
-	import CodeMirror from './CodeMirror.svelte';
-	import Terminal from './xterm.svelte';
+	import { resizing, html, css, js } from '../stores/store.js';
+	import { ideMode } from '../stores/ide.js';
+	import { onMount } from 'svelte';
+	import Sidebar from '../components/Sidebar.svelte';
+	import Navbar from '../components/Navbar.svelte';
 
-	let editor;
-	let terminal;
-	let pd;
+	let srcDoc;
+	let cooldownTimer;
+	let firstLoad = true;
+
+	onMount(() => {
+		setTimeout(() => {
+			firstLoad = false;
+		}, 1400);
+		window.addEventListener('message', (e) => {
+			const data = e.data;
+		});
+	});
+
+	$: {
+		clearTimeout(cooldownTimer);
+		cooldownTimer = setTimeout(async () => {
+			srcDoc =
+				'<ht' +
+				"ml lang='en'>" +
+				'<he' +
+				'ad>' +
+				'<me' +
+				"ta charset='UTF-8'" +
+				'>' +
+				'<me' +
+				"ta name='viewport' content='width=device-width, initial-scale=1.0'" +
+				'>' +
+				'<ti' +
+				'tle>Document</ti' +
+				'tle>' +
+				'</he' +
+				'ad>' +
+				'<bo' +
+				`dy>${$html}</bo` +
+				'dy>' +
+				'<st' +
+				`yle>${$css}</st` +
+				'yle>' +
+				'<sc' +
+				`ript>${$js}</scr` +
+				'ipt>' +
+				'</h' +
+				'tml>';
+			console.log(srcDoc);
+		}, 320);
+	}
 </script>
 
-<div class="h-screen bg-[#282c34] md:flex">
-	<div class="flex-grow">
-		<div class="p-4 bg-gray-800 text-white text-lg flex items-center">
-			<button
-				class="bg-green-500 disabled:bg-gray-500 rounded-lg flex items-center justify-center p-2 w-24 h-12 hover:bg-green-600 transition font-bold"
-				on:click={() => terminal.runCode(editor.getCode())}
-				disabled={!pd}
-			>
-				<svg
-					aria-hidden="true"
-					fill="currentColor"
-					viewBox="0 0 20 20"
-					xmlns="http://www.w3.org/2000/svg"
-					class="h-8 w-8"
-				>
-					<path
-						d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"
-					/>
-				</svg>
-				<span class="inline-block ml-2">Run</span>
-			</button>
-			{#if !pd}
-				<span class="text-sm inline-block ml-2">Loading Pyodide...</span>
+<main class="w-screen h-screen flex flex-col overflow-hidden min-w-[700px] font-mono">
+	<Navbar />
+	<section class="flex h-full">
+		<Sidebar />
+
+		<div class="flex flex-1 relative">
+			{#if $resizing}
+				<div class="bg-transparent w-full h-full absolute left-0 top-0" />
+			{/if}
+			{#if $ideMode}
+			<pre>This is output</pre>
+			{:else}
+				<iframe
+					srcdoc={srcDoc}
+					sandbox="allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation allow-downloads allow-presentation"
+					title="output"
+					frameborder="0"
+					width="100%"
+					height="100%"
+				/>
 			{/if}
 		</div>
-		<CodeMirror bind:this={editor}/>
-	</div>
-	<div
-		class="self-end md:h-screen h-[30vh] overflow-y-auto font-mono md:w-[30vw] bg-black text-white"
-	>
-		<Terminal bind:this={terminal} bind:pyodide_loaded={pd}/>
-	</div>
-</div>
+	</section>
+</main>
+
+<style>
+	:global(.CodeMirror) {
+		height: 100%;
+		font-size: 14px;
+	}
+
+	:global(body) {
+		margin: 0;
+	}
+</style>

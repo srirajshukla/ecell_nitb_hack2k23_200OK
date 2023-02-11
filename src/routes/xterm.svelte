@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { FitAddon } from 'xterm-addon-fit';
 	let output = '';
 	let terminal;
 	let tDiv;

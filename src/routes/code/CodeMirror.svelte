@@ -1,139 +1,73 @@
-<!-- The code below is released under public domain. -->
-<script context="module">
-	import { EditorView, minimalSetup, basicSetup } from 'codemirror';
-	import { ViewPlugin } from '@codemirror/view';
-	import { StateEffect } from '@codemirror/state';
-	export { minimalSetup, basicSetup };
-</script>
-
 <script>
-	import { onMount, onDestroy, createEventDispatcher } from 'svelte';
-	const dispatch = createEventDispatcher();
+	import * as Y from 'yjs';
+	import { onMount } from 'svelte';
+	// @ts-ignore
+	import { yCollab, yUndoManagerKeymap } from 'y-codemirror.next';
+	import { WebsocketProvider } from 'y-websocket';
 
+	import { EditorView, basicSetup } from 'codemirror';
+	import { keymap } from '@codemirror/view';
+	import { python } from '@codemirror/lang-python';
+	import { oneDark } from '@codemirror/theme-one-dark';
+
+	import * as random from 'lib0/random';
+	import { EditorState } from '@codemirror/state';
+	import { createEventDispatcher } from 'svelte';
+
+	export const usercolors = [
+		{ color: '#30bced', light: '#30bced33' },
+		{ color: '#6eeb83', light: '#6eeb8333' },
+		{ color: '#ffbc42', light: '#ffbc4233' },
+		{ color: '#ecd444', light: '#ecd44433' },
+		{ color: '#ee6352', light: '#ee635233' },
+		{ color: '#9ac2c9', light: '#9ac2c933' },
+		{ color: '#8acb88', light: '#8acb8833' },
+		{ color: '#1be7ff', light: '#1be7ff33' }
+	];
+
+	export const userColor = usercolors[random.uint32() % usercolors.length];
 	let dom;
-
+	let view;
 	let _mounted = false;
+
 	onMount(() => {
 		_mounted = true;
+
+		const ydoc = new Y.Doc();
+		const provider = new WebsocketProvider('ws://10.12.0.226:8000/ws/chat', 'lobby/', ydoc);
+		const ytext = ydoc.getText('codemirror');
+
+		provider.awareness.setLocalStateField('user', {
+			name: 'Anonymous ' + Math.floor(Math.random() * 10),
+			color: userColor.color,
+			colorLight: userColor.light
+		});
+
+		const state = EditorState.create({
+			doc: 'import this',
+			extensions: [
+				keymap.of([...yUndoManagerKeymap]),
+				basicSetup,
+				python(),
+				EditorView.lineWrapping,
+				yCollab(ytext, provider.awareness),
+				oneDark
+			]
+		});
+
+		view = new EditorView({
+			state,
+			parent: dom
+		});
+
 		return () => {
 			_mounted = false;
 		};
 	});
 
-	export let view = null;
-
-	/* `doc` is deliberately made non-reactive for not storing a reduntant string
-   besides the editor. Also, setting doc to undefined will not trigger an
-   update, so that you can clear it after setting one. */
-	export let doc;
-
-	/* Set this if you would like to listen to all transactions via `update` event. */
-	export let verbose = false;
-
-	/* Cached doc string so that we don't extract strings in bulk over and over. */
-	let _docCached = null;
-
-	/* Overwrite the bulk of the text with the one specified. */
-	function _setText(text) {
-		view.dispatch({
-			changes: { from: 0, to: view.state.doc.length, insert: text }
-		});
+	export function getCode() {
+		return view.state.doc.toString();
 	}
-
-	const subscribers = new Set();
-
-	/* And here comes the reactivity, implemented as a r/w store. */
-	export const docStore = {
-		ready: () => view !== null,
-		subscribe(cb) {
-			subscribers.add(cb);
-
-			if (!this.ready()) {
-				cb(null);
-			} else {
-				if (_docCached == null) {
-					_docCached = view.state.doc.toString();
-				}
-				cb(_docCached);
-			}
-
-			return () => void subscribers.delete(cb);
-		},
-		set(newValue) {
-			if (!_mounted) {
-				throw new Error('Cannot set docStore when the component is not mounted.');
-			}
-
-			const inited = _initEditorView(newValue);
-			if (!inited) _setText(newValue);
-		}
-	};
-
-	export let extensions = minimalSetup;
-
-	function _reconfigureExtensions() {
-		if (view === null) return;
-		view.dispatch({
-			effects: StateEffect.reconfigure.of(extensions)
-		});
-	}
-
-	$: extensions, _reconfigureExtensions();
-
-	function _editorTxHandler(tr) {
-		this.update([tr]);
-
-		if (verbose) {
-			dispatch('update', tr);
-		}
-
-		if (tr.docChanged) {
-			_docCached = null;
-			if (subscribers.size) {
-				dispatchDocStore((_docCached = tr.newDoc.toString()));
-			}
-			dispatch('change', { view: this, tr });
-		}
-	}
-
-	function dispatchDocStore(s) {
-		for (const cb of subscribers) {
-			cb(s);
-		}
-	}
-
-	// the view will be inited with the either doc (as long as that it is not `undefined`)
-	// or the value in docStore once set
-	function _initEditorView(initialDoc) {
-		if (view !== null) {
-			return false;
-		}
-
-		view = new EditorView({
-			doc: initialDoc,
-			extensions,
-			parent: dom,
-			dispatch: _editorTxHandler
-		});
-		return true;
-	}
-
-	$: if (_mounted && doc !== undefined) {
-		const inited = _initEditorView(doc);
-		dispatchDocStore(doc);
-	}
-
-	onDestroy(() => {
-		if (view !== null) {
-			view.destroy();
-		}
-	});
 </script>
 
-<div class="codemirror" bind:this={dom} />
-
-<style>
-	.codemirror {
-		display: contents;
-	}
-</style>
+<div bind:this={dom} />

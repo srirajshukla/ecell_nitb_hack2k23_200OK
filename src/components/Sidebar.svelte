@@ -68,7 +68,7 @@
 		</div>
 	{:else}
 		<div class="w-full">
-			<Editor lang={'markdown'} bind:value={$md} label="Markdown" />
+			<Collab lang={'markdown'} bind:value={$md} label="Markdown" />
 		</div>
 	{/if}
 	<div

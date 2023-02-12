@@ -1,5 +1,5 @@
 <script>
-	import { lobby } from '../stores/mode';
+	import { lobby, mode } from '../stores/mode';
 	import { page } from '$app/stores';
 	import * as random from 'lib0/random';
 </script>
@@ -16,10 +16,4 @@
 		<a href="/markdown">Notes Mode</a>
 		<a href="/python">Python Mode</a>
 	</section>
-
-	{#if $lobby}
-		<a href={`${$page.url.href}`}>
-			{$page.url.href}
-		</a>
-	{/if}
 </main>

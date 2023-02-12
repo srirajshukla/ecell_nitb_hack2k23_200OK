@@ -65,14 +65,8 @@
 
 <div class="p-4">
 	{#if !pyodide_loaded}
-		<button
-			class="bg-slate-300 rounded-lg inline-flex items-center justify-center py-2 px-4 h-12 hover:bg-slate-400 transition"
-			on:click={load_pyodide}
-			disabled={loading_pyodide}>Load Pyodide</button
-		>
-		{#if !loading_pyodide}
-			<span>Loading Pyodide...</span>
-		{/if}
+		<button on:click={load_pyodide} disabled={loading_pyodide}>[Load]</button>
+		<span>Loading environment...</span>
 	{/if}
 	{#if pyodide_loaded}
 		<button
@@ -96,7 +90,7 @@
 		<button
 			class="bg-red-500 text-red-900 disabled:bg-gray-400 rounded-lg inline-flex items-center justify-center py-2 px-3 h-12 hover:bg-red-400 transition font-bold"
 			disabled={!pyodide_loaded}
-			on:click={() => output = ''}
+			on:click={() => (output = '')}
 		>
 			<svg
 				aria-hidden="true"

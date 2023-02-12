@@ -37,6 +37,7 @@
 	"dependencies": {
 		"@sveltejs/adapter-static": "^2.0.1",
 		"marked": "^4.2.12",
+		"svelte-clipboard": "^1.0.0",
 		"svelte-markdown": "^0.2.3",
 		"y-codemirror": "^3.0.1"
 	}

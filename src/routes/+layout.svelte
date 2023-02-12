@@ -25,9 +25,28 @@
 </main>
 
 <style>
+	:global(.remote-caret) {
+		position: absolute;
+		border-left: black;
+		border-left-style: solid;
+		border-left-width: 2px;
+		height: 1em;
+	}
+	:global(.remote-caret > div) {
+		position: relative;
+		top: -1.05em;
+		font-size: 13px;
+		user-select: none;
+		color: white;
+		padding-left: 2px;
+		padding-right: 2px;
+		z-index: 5;
+	}
+
 	:global(.CodeMirror) {
+		padding-top: 1rem;
 		height: 100%;
-		font-size: 14px;
+		font-size: 16px;
 	}
 
 	:global(body) {

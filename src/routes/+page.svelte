@@ -1,10 +1,11 @@
 <script>
 	import { resizing, html, css, js } from '../stores/store.js';
-	import { ideMode } from '../stores/ide.js';
+	import { mode } from '../stores/mode.js';
 	import { onMount } from 'svelte';
 	import Sidebar from '../components/Sidebar.svelte';
 	import Navbar from '../components/Navbar.svelte';
 	import Pyodide from '../components/Pyodide.svelte';
+	import Markdown from '../components/Markdown.svelte';
 
 	let srcDoc;
 	let cooldownTimer;
@@ -62,9 +63,9 @@
 			{#if $resizing}
 				<div class="bg-transparent w-full h-full absolute left-0 top-0" />
 			{/if}
-			{#if $ideMode}
+			{#if $mode === 'ide'}
 				<Pyodide />
-			{:else}
+			{:else if $mode === 'web'}
 				<iframe
 					srcdoc={srcDoc}
 					sandbox="allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation allow-downloads allow-presentation"
@@ -73,6 +74,8 @@
 					width="100%"
 					height="100%"
 				/>
+			{:else}
+				<Markdown />
 			{/if}
 		</div>
 	</section>

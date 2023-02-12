@@ -2,10 +2,10 @@
 	import Editor from './Editor.svelte';
 	import Collab from './Collab.svelte';
 	import { Pane, Splitpanes } from 'svelte-splitpanes';
-	import { resizing, html, css, js, code } from '../stores/store.js';
+	import { resizing, html, css, js, md, code } from '../stores/store.js';
 	import { onMount } from 'svelte';
 
-	import { ideMode } from '../stores/ide';
+	import { mode } from '../stores/mode';
 
 	let sidebar;
 
@@ -48,9 +48,9 @@
 </script>
 
 <section bind:this={sidebar} class="flex min-w-[380px] w-[472px]">
-	{#if !$ideMode}
+	{#if $mode === 'web'}
 		<Splitpanes horizontal={true} theme="own" firstSplitter={true}>
-			<Pane maxSize={100} class="html-pane">
+			<Pane maxSize={100}>
 				<Editor lang={'xml'} bind:value={$html} />
 			</Pane>
 
@@ -62,9 +62,13 @@
 				<Editor lang={'css'} bind:value={$css} />
 			</Pane>
 		</Splitpanes>
-	{:else}
+	{:else if $mode === 'ide'}
 		<div class="w-full ide__splitter">
 			<Collab lang={'python'} bind:value={$code} />
+		</div>
+	{:else}
+		<div class="w-full markdown_splitter">
+			<Editor lang={'markdown'} bind:value={$md} />
 		</div>
 	{/if}
 	<div

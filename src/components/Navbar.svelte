@@ -1,5 +1,5 @@
 <script>
-	import { ideMode } from '../stores/ide';
+	import { mode } from '../stores/mode';
 </script>
 
 <main
@@ -8,19 +8,26 @@
 	<section class="flex items-center space-x-4 select-none">
 		<h1 class="font-heading text-xl">Watashiato</h1>
 	</section>
-	{#if $ideMode}
-		<button
-			class="bg-slate-300 rounded-lg flex items-center justify-center py-2 px-4 h-12 hover:bg-slate-400 transition"
-			on:click={() => ideMode.set(!$ideMode)}
-		>
-			Switch to Dev Mode
-		</button>
-	{:else}
-		<button
-			class="bg-slate-300 rounded-lg flex items-center justify-center py-2 px-4 h-12 hover:bg-slate-400 transition"
-			on:click={() => ideMode.set(!$ideMode)}
-		>
-			Switch to IDE Mode
-		</button>
-	{/if}
+	<select
+		class="form-select appearance-none
+      block
+      px-3
+      py-2
+      text-base
+      font-normal
+      text-gray-700
+      bg-white bg-clip-padding bg-no-repeat
+      rounded
+      transition
+      ease-in-out
+      m-0
+	  text-right
+      focus:text-gray-700 focus:bg-white focus:outline-none"
+		aria-label="Mode Selector"
+		bind:value={$mode}
+	>
+		<option value="markdown" selected>Notes Mode</option>
+		<option value="web">Web Mode</option>
+		<option value="ide">Python Mode</option>
+	</select>
 </main>

@@ -1,5 +1,6 @@
 <script>
-	import { lobby, mode } from '../stores/mode';
+	import { lobby } from '../stores/mode';
+	import { page } from '$app/stores';
 	import * as random from 'lib0/random';
 </script>
 
@@ -9,32 +10,16 @@
 	<section class="flex items-center space-x-4 select-none">
 		<h1 class="font-heading text-xl">Watashiato</h1>
 	</section>
-	<section>
-		<select
-			class="form-select appearance-none
-      block
-      px-3
-      py-2
-      text-base
-      font-normal
-      text-gray-700
-      bg-white bg-clip-padding bg-no-repeat
-      rounded
-      transition
-      ease-in-out
-      m-0
-	  text-right
-      focus:text-gray-700 focus:bg-white focus:outline-none"
-			aria-label="Mode Selector"
-			bind:value={$mode}
-		>
-			<option value="markdown" selected>Notes Mode</option>
-			<option value="web">Web Mode</option>
-			<option value="ide">Python Mode</option>
-		</select>
 
-		{#if $lobby}
-			<span>{$lobby}</span>
-		{/if}
+	<section>
+		<a href="/web">Web Mode</a>
+		<a href="/markdown">Notes Mode</a>
+		<a href="/python">Python Mode</a>
 	</section>
+
+	{#if $lobby}
+		<a href={`${$page.url.href}`}>
+			{$page.url.href}
+		</a>
+	{/if}
 </main>

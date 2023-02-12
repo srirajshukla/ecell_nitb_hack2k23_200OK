@@ -4,8 +4,7 @@
 	import { Pane, Splitpanes } from 'svelte-splitpanes';
 	import { resizing, html, css, js, md, code } from '../stores/store.js';
 	import { onMount } from 'svelte';
-
-	import { mode } from '../stores/mode';
+	import { page } from '$app/stores';
 
 	let sidebar;
 
@@ -48,7 +47,7 @@
 </script>
 
 <section bind:this={sidebar} class="flex min-w-[380px] w-[472px]">
-	{#if $mode === 'web'}
+	{#if $page.url.pathname === '/web'}
 		<Splitpanes horizontal={true} theme="own" firstSplitter={true}>
 			<Pane maxSize={100} class="html-pane">
 				<Editor lang={'xml'} bind:value={$html} label="HTML" />
@@ -62,7 +61,7 @@
 				<Editor lang={'css'} bind:value={$css} label="CSS" />
 			</Pane>
 		</Splitpanes>
-	{:else if $mode === 'ide'}
+	{:else if $page.url.pathname === '/python'}
 		<div class="w-full">
 			<Collab lang={'python'} bind:value={$code} label="Python" />
 		</div>

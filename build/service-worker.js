@@ -29,7 +29,7 @@ const m = [
   "/logo512.png",
   "/manifest.json",
   "/maskableicon.png"
-], o = "1676183890432", t = self, i = `cache${o}`, p = m.concat(h), u = new Set(p);
+], o = "1676193727778", t = self, i = `cache${o}`, p = m.concat(h), u = new Set(p);
 t.addEventListener("install", (s) => {
   s.waitUntil(
     caches.open(i).then((a) => a.addAll(p)).then(() => {

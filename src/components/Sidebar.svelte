@@ -2,7 +2,7 @@
 	import Editor from './Editor.svelte';
 	import Collab from './Collab.svelte';
 	import { Pane, Splitpanes } from 'svelte-splitpanes';
-	import { resizing, html, css, js } from '../stores/store.js';
+	import { resizing, html, css, js, code } from '../stores/store.js';
 	import { onMount } from 'svelte';
 
 	import { ideMode } from '../stores/ide';
@@ -63,7 +63,9 @@
 			</Pane>
 		</Splitpanes>
 	{:else}
-		<Collab lang={'python'} />
+		<div class="w-full ide__splitter">
+			<Collab lang={'python'} bind:value={$code} />
+		</div>
 	{/if}
 	<div
 		on:mousedown={handleSidebarResize}
@@ -83,7 +85,7 @@
 		position: relative;
 		cursor: row-resize;
 	}
-	:global(.splitpanes__splitter:before) {
+	:global(.splitpanes__splitter:before, .ide__splitter:before) {
 		display: flex;
 		align-items: center;
 		padding-left: 50px;
@@ -99,14 +101,14 @@
 	}
 	:global(.html-splitter.splitpanes__splitter:before) {
 		content: 'HTML';
-		background-image: url('https://api.iconify.design/icomoon-free:html-five.svg?color=%23FF694B');
 	}
 	:global(.js-splitter.splitpanes__splitter:before) {
 		content: 'JS';
-		background-image: url('https://api.iconify.design/cib:javascript.svg?color=%23F7DD1E');
 	}
 	:global(.css-splitter.splitpanes__splitter:before) {
 		content: 'CSS';
-		background-image: url('https://api.iconify.design/icomoon-free:css3.svg?color=%2330ace0');
+	}
+	:global(.ide__splitter.splitpanes__splitter:before) {
+		content: 'Python';
 	}
 </style>

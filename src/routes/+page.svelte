@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte';
 	import Sidebar from '../components/Sidebar.svelte';
 	import Navbar from '../components/Navbar.svelte';
+	import Pyodide from '../components/Pyodide.svelte';
 
 	let srcDoc;
 	let cooldownTimer;
@@ -48,8 +49,7 @@
 				'ipt>' +
 				'</h' +
 				'tml>';
-			console.log(srcDoc);
-		}, 320);
+		}, 400);
 	}
 </script>
 
@@ -58,12 +58,12 @@
 	<section class="flex h-full">
 		<Sidebar />
 
-		<div class="flex flex-1 relative">
+		<div class="overflow-y-auto flex-1 relative">
 			{#if $resizing}
 				<div class="bg-transparent w-full h-full absolute left-0 top-0" />
 			{/if}
 			{#if $ideMode}
-			<pre>This is output</pre>
+				<Pyodide />
 			{:else}
 				<iframe
 					srcdoc={srcDoc}

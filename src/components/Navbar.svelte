@@ -1,7 +1,5 @@
 <script>
-	import { lobby, mode } from '../stores/mode';
 	import { page } from '$app/stores';
-	import * as random from 'lib0/random';
 </script>
 
 <main
@@ -12,8 +10,17 @@
 	</section>
 
 	<section>
-		<a href="/web">Web Mode</a>
-		<a href="/markdown">Notes Mode</a>
-		<a href="/python">Python Mode</a>
+		<a href="/web" class={$page.url.pathname === '/web' && 'font-bold bg-gray-300 px-2 p-1 rounded'}
+			>Web Mode</a
+		>
+		<a
+			href="/markdown"
+			class={$page.url.pathname === '/markdown' && 'font-bold bg-gray-300 px-2 p-1 rounded'}
+			>Notes Mode</a
+		>
+		<a
+			href="/python"
+			class={$page.url.pathname === '/python' && 'font-bold bg-gray-300 px-2 p-1 rounded'}>IDE Mode</a
+		>
 	</section>
 </main>

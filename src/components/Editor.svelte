@@ -47,7 +47,7 @@
 </script>
 
 <div class="editor-container">
-	<h3 class="py-1 px-4 text-white text-xs lowercase font-bold bg-gray-900">{label}</h3>
+	<h3 class="py-2 px-4 text-white text-xs lowercase font-bold bg-gray-900">{label}</h3>
 	<textarea bind:this={textArea} bind:value readonly />
 </div>
 

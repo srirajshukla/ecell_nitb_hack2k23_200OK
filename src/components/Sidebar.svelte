@@ -50,25 +50,25 @@
 <section bind:this={sidebar} class="flex min-w-[380px] w-[472px]">
 	{#if $mode === 'web'}
 		<Splitpanes horizontal={true} theme="own" firstSplitter={true}>
-			<Pane maxSize={100}>
-				<Editor lang={'xml'} bind:value={$html} />
+			<Pane maxSize={100} class="html-pane">
+				<Editor lang={'xml'} bind:value={$html} label="HTML" />
 			</Pane>
 
-			<Pane maxSize={100}>
-				<Editor lang={'javascript'} bind:value={$js} />
+			<Pane maxSize={100} class="js-pane">
+				<Editor lang={'javascript'} bind:value={$js} label="JS" />
 			</Pane>
 
-			<Pane maxSize={100}>
-				<Editor lang={'css'} bind:value={$css} />
+			<Pane maxSize={100} class="css-pane">
+				<Editor lang={'css'} bind:value={$css} label="CSS" />
 			</Pane>
 		</Splitpanes>
 	{:else if $mode === 'ide'}
-		<div class="w-full ide__splitter">
-			<Collab lang={'python'} bind:value={$code} />
+		<div class="w-full">
+			<Collab lang={'python'} bind:value={$code} label="Python" />
 		</div>
 	{:else}
-		<div class="w-full markdown_splitter">
-			<Editor lang={'markdown'} bind:value={$md} />
+		<div class="w-full">
+			<Editor lang={'markdown'} bind:value={$md} label="Markdown" />
 		</div>
 	{/if}
 	<div
@@ -85,34 +85,9 @@
 		border: none;
 	}
 	:global(.splitpanes__splitter) {
-		height: 44px;
+		height: 4px;
+		background-color: rgb(17 24 39);
 		position: relative;
 		cursor: row-resize;
-	}
-	:global(.splitpanes__splitter:before, .ide__splitter:before) {
-		display: flex;
-		align-items: center;
-		padding-left: 50px;
-		height: 100%;
-		background-repeat: no-repeat;
-		background-position: 15px 50%;
-		background-size: 20px;
-		width: 110px;
-	}
-	:global(.html-splitter) {
-		cursor: auto;
-		border: none;
-	}
-	:global(.html-splitter.splitpanes__splitter:before) {
-		content: 'HTML';
-	}
-	:global(.js-splitter.splitpanes__splitter:before) {
-		content: 'JS';
-	}
-	:global(.css-splitter.splitpanes__splitter:before) {
-		content: 'CSS';
-	}
-	:global(.ide__splitter.splitpanes__splitter:before) {
-		content: 'Python';
 	}
 </style>

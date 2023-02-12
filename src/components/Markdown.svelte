@@ -3,6 +3,9 @@
 	import { md } from '../stores/store';
 </script>
 
-<div class="prose p-4">
+<div class="p-4 bg-gray-900 h-full w-full">
+	<div class="prose prose-invert">
+
 	<SvelteMarkdown source={$md}/>
+	</div>
 </div>

@@ -14,6 +14,8 @@ export const css = writable(storedCSS || '');
 export const code = writable('');
 export const pyodide_loaded = writable(false);
 
+export const md = writable('');
+
 html.subscribe((value) => {
 	localStorage.setItem(PREFIX + 'html', value);
 });

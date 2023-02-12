@@ -2,12 +2,11 @@
 	// @ts-nocheck
 	import 'codemirror/lib/codemirror.css';
 	import 'codemirror/theme/ayu-mirage.css';
-	import 'codemirror/theme/eclipse.css';
 	import 'codemirror/mode/javascript/javascript';
+	import 'codemirror/mode/markdown/markdown';
 	import 'codemirror/mode/css/css';
 	import 'codemirror/mode/xml/xml';
 	import 'codemirror/mode/python/python';
-	// ADDONS
 	import 'codemirror/addon/fold/xml-fold.js';
 	import 'codemirror/addon/edit/closetag.js';
 	import 'codemirror/addon/edit/closebrackets.js';
@@ -16,15 +15,10 @@
 
 	export let value;
 	export let lang;
+	export let label;
 	let editor;
-	let firstLoad = true;
 
-	let theme;
-
-	theme = 'ayu-mirage';
-	if (!firstLoad) {
-		editor.setOption('theme', 'ayu-dark');
-	}
+	let theme = 'ayu-mirage';
 
 	let textArea;
 
@@ -46,7 +40,6 @@
 		editor.on('change', () => {
 			value = editor.getValue();
 		});
-		firstLoad = false;
 		return () => {
 			editor.toTextArea();
 		};
@@ -54,6 +47,7 @@
 </script>
 
 <div class="editor-container">
+	<h3 class="py-1 px-4 text-white text-xs lowercase font-bold bg-gray-900">{label}</h3>
 	<textarea bind:this={textArea} bind:value readonly />
 </div>
 

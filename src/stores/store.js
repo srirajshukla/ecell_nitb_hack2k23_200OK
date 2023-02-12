@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-const PREFIX = 'watashiato-';
+const PREFIX = 'wasabi-';
 
 export const resizing = writable(false);
 

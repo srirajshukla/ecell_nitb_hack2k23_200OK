@@ -3,3 +3,7 @@
 </script>
 
 <Markdown />
+
+<svelte:head>
+	<title>Notes Mode | Watashiato</title>
+</svelte:head>

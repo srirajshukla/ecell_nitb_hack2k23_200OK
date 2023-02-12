@@ -57,3 +57,7 @@
 	width="100%"
 	height="100%"
 />
+
+<svelte:head>
+	<title>Web Mode | Watashiato</title>
+</svelte:head>
